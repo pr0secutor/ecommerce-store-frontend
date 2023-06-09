@@ -175,10 +175,10 @@ function SizeBox({
           ? "hover:border-black cursor-pointer"
           : "cursor-not-allowed bg-black/[0.1] opacity-50"
       } ${selectedSize === size ? "border-black" : ""}`}
-      onClick={() => {
+      onClick={enabled?() => {
         setSelectedSize(size);
         setShowError(false);
-      }}
+      }:null}
     >
       {size}
     </div>
