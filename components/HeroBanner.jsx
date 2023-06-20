@@ -1,66 +1,38 @@
-import React from "react";
+import React, { Suspense } from "react";
+import { useMediaQuery } from "react-responsive";
 
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from "react-responsive-carousel";
-
-import { BiArrowBack } from "react-icons/bi";
-import Image from "next/image";
+import { Canvas } from "@react-three/fiber";
+import { ContactShadows, OrbitControls } from "@react-three/drei";
+import { Model } from "./3dComponents/Nike_air_zoom_pegasus_36";
 
 const HeroBanner = () => {
+  const isSmallerThan620 = useMediaQuery({ query: "(max-width:620px)" });
+
   return (
-    <div className="relative text-white text-[20px] w-full max-w-[1360px] mx-auto">
-      <Carousel
-        autoPlay={true}
-        infiniteLoop={true}
-        showThumbs={false}
-        showIndicators={false}
-        showStatus={false}
-        renderArrowPrev={(clickHandler, hasPrev) => (
-          <div
-            onClick={clickHandler}
-            className="absolute right-[31px] md:right-[51px] bottom-0 w-[30px] md:w-[50px] h-[30px] md:h-[50px] bg-black z-10 flex items-center justify-center cursor-pointer hover:opacity-90"
-          >
-            <BiArrowBack className="text-sm md:text-lg" />
-          </div>
-        )}
-        renderArrowNext={(clickHandler, hasNext) => (
-          <div
-            onClick={clickHandler}
-            className="absolute right-0 bottom-0 w-[30px] md:w-[50px] h-[30px] md:h-[50px] bg-black z-10 flex items-center justify-center cursor-pointer hover:opacity-90"
-          >
-            <BiArrowBack className="rotate-180 text-sm md:text-lg" />
-          </div>
-        )}
-      >
-        <CarouselItem src="/slide-1.webp" />
-        <CarouselItem src="/slide-2.webp" />
-        <CarouselItem src="/slide-3.webp" />
-      </Carousel>
+    <div className="relative w-full h-[540px] max-w-[1360px] mx-auto animate-fade-in">
+      <Suspense fallback={null}>
+        <Canvas camera={{ position: [0, 0, 4], fov: 40 }}>
+          <ambientLight intensity={0.7} />
+          <spotLight
+            intensity={0.5}
+            angle={0.1}
+            penumbra={1}
+            position={[10, 15, -5]}
+            castShadow
+          />
+          <ContactShadows
+            resolution={512}
+            position={[0, -0.8, 0]}
+            opacity={1}
+            scale={10}
+            blur={2}
+            far={1}
+          />
+          <Model scale={isSmallerThan620 ? 1 : 1.55} />
+        </Canvas>
+      </Suspense>
     </div>
   );
 };
-
-function CarouselItem({ src }) {
-  return (
-    <div>
-      <Image
-        height={1200}
-        width={525}
-        src={src}
-        alt="Carousel Image"
-        className="aspect-[16/10] md:aspect-auto object-cover"
-        priority
-      />
-      {/* <img
-        src={src}
-        alt="Carousel Image"
-        className="aspect-[16/10] md:aspect-auto object-cover"
-      /> */}
-      <div className="px-[15px] md:px-[40px] py-[10px] md:py-[25px] font-oswald bg-white absolute bottom-[25px] md:bottom-[75px] left-0 text-black/[0.9] text-[15px] md:text-[30px] uppercase font-medium cursor-pointer hover:opacity-90">
-        Shop now
-      </div>
-    </div>
-  );
-}
 
 export default HeroBanner;
