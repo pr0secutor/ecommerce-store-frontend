@@ -12,7 +12,7 @@ import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber';
 
 export function Model(props) {
-  const { nodes, materials } = useGLTF('/nike_air_zoom_pegasus_36.glb')
+  const { nodes, materials } = useGLTF('/nike_air_zoom_pegasus_36-transformed.glb')
   const ref=useRef();
   useFrame(({clock}) => {
     const t = clock.getElapsedTime()
@@ -28,4 +28,4 @@ export function Model(props) {
   )
 }
 
-useGLTF.preload('/nike_air_zoom_pegasus_36.glb')
+useGLTF.preload('/nike_air_zoom_pegasus_36-transformed.glb')
